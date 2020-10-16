@@ -1,12 +1,12 @@
 # YOLOv3 Object Detection ![SoDV](https://img.shields.io/badge/Build-passing-green) [![LICENSE](https://img.shields.io/badge/license-MIT-blue)](https://github.com/afiqharith/ObjectDetection-YOLOv3/blob/master/LICENSE)
 
-_💻 Install the dependencies on command line:_
+_Install the dependencies on command line:_
 
 ```sh
 $ pip3 install -r requirement.txt
 ```
 
-_💻 To run the program on command line:_
+_To run the program on command line:_
 
 ```sh
 $ python3 application.py

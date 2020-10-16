@@ -1,7 +1,7 @@
 __author__ = "Afiq Harith"
 __email__ = "afiqharith05@gmail.com"
-__date__ = "08 Oct 2020"
-__status__ = "Development-OOP"
+__date__ = "16 Oct 2020"
+__status__ = "Build-pass"
 
 import cv2
 import numpy as np
@@ -21,6 +21,7 @@ GREY    = cfg.GREY
 class SODV:
     def __init__(self,videoSRC, STAT = True):
         self.video = cv2.VideoCapture(videoSRC)
+        
         if STAT == True:
             self.main()
     
