@@ -8,20 +8,10 @@ import numpy as np
 import math
 import os
 from setup.LoadModel import LoadModel
-from setup import config as cfg
+from setup.config import *
 
 # Load video
-VIDEONAME = "TownCentre.mp4"
-FOLDERNAME = "videos/"
 VIDEOPATH = os.path.join(os.getcwd(), FOLDERNAME, VIDEONAME)
-
-GREEN   = cfg.GREEN
-RED     = cfg.RED
-YELLOW  = cfg.YELLOW
-WHITE   = cfg.WHITE
-ORANGE  = cfg.ORANGE
-BLUE    = cfg.BLUE
-GREY    = cfg.GREY
 
 class SODV:
     def __init__(self,VIDEOPATH, STAT = True):
