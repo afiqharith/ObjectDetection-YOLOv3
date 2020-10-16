@@ -10,6 +10,11 @@ import os
 from setup.LoadModel import LoadModel
 from setup import config as cfg
 
+# Load video
+VIDEONAME = "TownCentre.mp4"
+FOLDERNAME = "videos/"
+VIDEOPATH = os.path.join(os.getcwd(), FOLDERNAME, VIDEONAME)
+
 GREEN   = cfg.GREEN
 RED     = cfg.RED
 YELLOW  = cfg.YELLOW
@@ -19,8 +24,8 @@ BLUE    = cfg.BLUE
 GREY    = cfg.GREY
 
 class SODV:
-    def __init__(self,videoSRC, STAT = True):
-        self.video = cv2.VideoCapture(videoSRC)
+    def __init__(self,VIDEOPATH, STAT = True):
+        self.video = cv2.VideoCapture(VIDEOPATH)
         
         if STAT == True:
             self.main()
@@ -47,6 +52,7 @@ class SODV:
             net.setInput(blob)
             outs = net.forward(output_layers)
 
+            confidence_arr=[]
             class_ids = []
             confidences = []
             boxes = []
@@ -58,7 +64,7 @@ class SODV:
 
                     #if prediction is 50% and class id is 0 which is 'person'
                     if confidence > 0.5:
-                        
+                        confidence_arr.append(confidence)
                         # Object detected
                         center_x = int(detection[0] * width)
                         center_y = int(detection[1] * height)
@@ -86,7 +92,7 @@ class SODV:
                     ymax = (y + h)
 
                     self.draw_detection_box(frame,xmin,ymin,xmax,ymax,BLUE)
-                    label = classes[class_ids[i]]
+                    label = f"{classes[class_ids[i]]} {'%.2f' % confidence_arr[i]}"
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
 
                     y1label = max(ymin, labelSize[1])
@@ -102,10 +108,5 @@ class SODV:
 
 if __name__ == '__main__':
 
-    # Load video
-    videoName = "TownCentre.mp4"
-    videosPath = "videos/"
-    videoSRC = os.path.join(os.getcwd(), videosPath, videoName)
-
-    SODV(videoSRC)
+    SODV(VIDEOPATH)
     cv2.destroyAllWindows()
