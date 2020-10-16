@@ -1,4 +1,4 @@
-# YOLOv3 Object Detection ![SoDV](https://img.shields.io/badge/Build-passing-green) [![LICENSE](https://img.shields.io/badge/license-MIT-blue)](https://github.com/afiqharith/SocialDistanceDetector-SODV/blob/master/LICENSE)
+# YOLOv3 Object Detection ![SoDV](https://img.shields.io/badge/Build-passing-green) [![LICENSE](https://img.shields.io/badge/license-MIT-blue)](https://github.com/afiqharith/ObjectDetection-YOLOv3/blob/master/LICENSE)
 
 _💻 Install the dependencies on command line:_
 
@@ -27,4 +27,4 @@ MegaPixels: Origins, Ethics, and Privacy Implications of Publicly Available Face
 
 ### LICENSE
 
-_This project is under MIT license, please look at [LICENSE](https://github.com/afiqharith/SocialDistanceDetector-SODV/blob/master/LICENSE)._
+_This project is under MIT license, please look at [LICENSE](https://github.com/afiqharith/ObjectDetection-YOLOv3/blob/master/LICENSE)._
