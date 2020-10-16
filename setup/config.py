@@ -1,5 +1,8 @@
 # Model path
 FOLDERPATH  = "utils/model/"
+WEIGHTS     = "yolov3.weights"
+CFG         = "yolov3.cfg"
+COCONAMES   = "coco.names"
 
 # Video path
 VIDEONAME   = "TownCentre.mp4"
