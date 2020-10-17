@@ -57,7 +57,7 @@ class ObjectDetection:
                     class_id = np.argmax(scores)
                     confidence = scores[class_id]
 
-                    #if prediction is 50% and class id is 0 which is 'person'
+                    #if prediction is 50%
                     if confidence > 0.5:
                         confidence_arr.append(confidence)
                         # Object detected
