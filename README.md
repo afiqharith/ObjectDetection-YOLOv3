@@ -9,9 +9,22 @@ $ pip3 install -r requirement.txt
 _To run the program on command line:_
 
 ```sh
-$ python3 application.py
+$ python3 application-stream.py
 ```
+
+_Or:_
+
+```sh
+$ python3 application-img.py
+```
+
 </br>
+
+### 🎬 Output sample:
+
+| ![thumbnail](/images/output.jpeg) |
+| --------------------------------- |
+
 
 ---
 

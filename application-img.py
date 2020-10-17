@@ -1,6 +1,6 @@
 __author__ = "Afiq Harith"
 __email__ = "afiqharith05@gmail.com"
-__date__ = "16 Oct 2020"
+__date__ = "17 Oct 2020"
 __status__ = "Build-pass"
 
 import cv2
@@ -10,31 +10,30 @@ import os
 from setup.LoadModel import LoadModel
 from setup.config import *
 
-# Load video
-VIDEOPATH = os.path.join(os.getcwd(), FOLDERNAME, VIDEONAME)
+# Load image
+IMAGEPATH = os.path.join(os.getcwd(), IMAGEFOLDER, IMAGENAME)
 
-class SODV:
-    def __init__(self,VIDEOPATH, STAT = True):
-        self.video = cv2.VideoCapture(VIDEOPATH)
+class ObjectDetection:
+    
+    def __init__(self,IMAGEPATH, START = True):
+
+        self.image = cv2.imread(IMAGEPATH)
         
-        if STAT == True:
+        if START == True:
             self.main()
     
     def draw_detection_box(self,frame,x1,y1,x2,y2,color):
         cv2.rectangle(frame,(x1,y1),(x2,y2), color, 2)
         
     def main(self):
-        net, output_layers, classes = LoadModel.get()
 
         while True:
-            ret, frame = self.video.read() 
+            net, output_layers, classes = LoadModel.get()
 
-            if ret:
-                frame_resized = cv2.resize(frame, (416,416)) # resize frame for prediction       
-            else:
-                break
-            frame_rgb = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
-            height, width, channels = frame.shape
+            frame_resized = cv2.resize(self.image, (416,416)) # resize frame for prediction       
+
+            frame_rgb = cv2.cvtColor(self.image, cv2.IMREAD_COLOR)
+            height, width, channels = self.image.shape
 
             # Detecting objects
             blob = cv2.dnn.blobFromImage(frame_resized, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
@@ -81,22 +80,20 @@ class SODV:
                     xmax = (x + w)
                     ymax = (y + h)
 
-                    self.draw_detection_box(frame,xmin,ymin,xmax,ymax,BLUE)
+                    self.draw_detection_box(self.image,xmin,ymin,xmax,ymax,BLUE)
                     label = f"{classes[class_ids[i]]} {'%.2f' % confidence_arr[i]}"
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
 
                     y1label = max(ymin, labelSize[1])
-                    cv2.rectangle(frame, (xmin, y1label - labelSize[1]),(xmin + labelSize[0], ymin + baseLine), WHITE, cv2.FILLED)
-                    cv2.putText(frame, label, (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
+                    cv2.rectangle(self.image, (xmin, y1label - labelSize[1]),(xmin + labelSize[0], ymin + baseLine), WHITE, cv2.FILLED)
+                    cv2.putText(self.image, label, (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
 
-            cv2.imshow("YOLO Object Detection", frame)
-
-            if cv2.waitKey(1) >= 0:  
+            cv2.imshow("YOLO Object Detection", self.image)
+            if cv2.waitKey(0) % 256 == ord('q'):
                 break
-
-        self.video.release()
+        
 
 if __name__ == '__main__':
 
-    SODV(VIDEOPATH)
+    ObjectDetection(IMAGEPATH)
     cv2.destroyAllWindows()
