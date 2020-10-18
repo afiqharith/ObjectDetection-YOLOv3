@@ -15,15 +15,15 @@ IMAGEPATH = os.path.join(os.getcwd(), IMAGEFOLDER, IMAGENAME)
 
 class ObjectDetection:
     
-    def __init__(self,IMAGEPATH, START = True):
+    def __init__(self, IMAGEPATH, START = True):
 
         self.image = cv2.imread(IMAGEPATH)
         
         if START == True:
             self.main()
     
-    def draw_detection_box(self,frame,x1,y1,x2,y2,color):
-        cv2.rectangle(frame,(x1,y1),(x2,y2), color, 2)
+    def draw_detection_box(self, frame, x1, y1, x2, y2, color):
+        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
         
     def main(self):
 
@@ -78,7 +78,7 @@ class ObjectDetection:
                     xmax = (x + w)
                     ymax = (y + h)
 
-                    self.draw_detection_box(self.image,xmin,ymin,xmax,ymax,BLUE)
+                    self.draw_detection_box(self.image, xmin, ymin, xmax, ymax, BLUE)
                     label = f"{classes[classIDs[i]]} {'%.2f' % confidences[i]}"
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
 
