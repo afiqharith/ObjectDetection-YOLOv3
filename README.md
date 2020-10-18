@@ -18,6 +18,8 @@ _Or:_
 $ python3 application-img.py
 ```
 
+To use centroid tracker, enable tracker in **config.py** file by changing `TRACKER = False` to `TRACKER = True`.
+
 </br>
 
 ### 🎬 Output sample:

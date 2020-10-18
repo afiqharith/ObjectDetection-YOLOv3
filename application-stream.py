@@ -9,6 +9,7 @@ import math
 import os
 from setup.model import dataFromModel
 from setup.config import *
+from setup.tracker import CentroidTracker
 
 # Load video
 VIDEOPATH = os.path.join(os.getcwd(), VIDEOFOLDER, VIDEONAME)
@@ -25,8 +26,8 @@ class ObjectDetection:
         if START == True:
             self.main()
     
-    def draw_detection_box(self, frame, x1, y1, x2, y2, color):
-        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+    def draw_detection_box(self, frame, xmn, ymn, xmx, ymx, color):
+        cv2.rectangle(frame, (xmn, ymn), (xmx, ymx), color, 2)
         
     def main(self):
         net, layerNames, classes = dataFromModel.get(MODELPATH, WEIGHTS, CFG, COCONAMES)
@@ -50,6 +51,10 @@ class ObjectDetection:
             classIDs = []
             confidences = []
             boxes = []
+
+            # For object tracker from pyimagesarch
+            rects = []
+
             for output in layerOutputs:
                 for detection in output:
                     scores = detection[5:]
@@ -58,6 +63,7 @@ class ObjectDetection:
 
                     #if prediction is 50%
                     if confidence > CONFIDENCE:
+
                         # Object detected
                         center_x = int(detection[0] * width)
                         center_y = int(detection[1] * height)
@@ -72,8 +78,15 @@ class ObjectDetection:
                         confidences.append(float(confidence))
                         classIDs.append(classID)
 
+                        # For object tracker from pyimagesarch
+                        box = np.array([x, y, x+w, y+h])
+                        rects.append(box.astype("int"))
+                        
             # apply non-max suppression
             indexes = cv2.dnn.NMSBoxes(boxes, confidences, CONFIDENCE, THRESHOLD)
+
+            # For object tracker from pyimagesarch
+            objects = CentroidTracker().update(rects)
 
             for i in range(len(boxes)):
                 if i in indexes:
@@ -91,6 +104,14 @@ class ObjectDetection:
                     y1label = max(ymin, labelSize[1])
                     cv2.rectangle(self.frame, (xmin, y1label - labelSize[1]),(xmin + labelSize[0], ymin + baseLine), WHITE, cv2.FILLED)
                     cv2.putText(self.frame, label, (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
+                    
+                    # For object tracker from pyimagesarch
+                    if TRACKER == True:
+                        for (objectID, centroid) in objects.items():
+                            text = f'{objectID}'
+                            cv2.putText(self.frame, text, (centroid[0] - 10, centroid[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
+                            cv2.circle(self.frame, (centroid[0], centroid[1]), 4, GREY, -1, cv2.LINE_AA)
+
 
             cv2.imshow("YOLO Object Detection", self.frame)
 

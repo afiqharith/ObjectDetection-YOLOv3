@@ -1,4 +1,5 @@
 CAMERA = False
+TRACKER = False
 
 # Threshold when apply NMS 
 THRESHOLD = 0.4

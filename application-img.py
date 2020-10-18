@@ -22,8 +22,8 @@ class ObjectDetection:
         if START == True:
             self.main()
     
-    def draw_detection_box(self, frame, x1, y1, x2, y2, color):
-        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+    def draw_detection_box(self, frame, xmn, ymn, xmx, ymx, color):
+        cv2.rectangle(frame, (xmn, ymn), (xmx, ymx), color, 2)
         
     def main(self):
 
