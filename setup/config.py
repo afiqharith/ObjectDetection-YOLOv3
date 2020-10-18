@@ -1,7 +1,13 @@
 CAMERA = False
 
+# Threshold when apply NMS 
+THRESHOLD = 0.4
+
+# Detection confidence to filter weak prediction
+CONFIDENCE = 0.5
+
 # Model path
-FOLDERPATH = "utils/model/"
+MODELPATH = "utils/model/"
 WEIGHTS = "yolov3.weights"
 CFG = "yolov3.cfg"
 COCONAMES = "coco.names"
@@ -13,11 +19,6 @@ VIDEOFOLDER = "videos/"
 # Image path
 IMAGENAME = 'scene.jpeg'
 IMAGEFOLDER = 'images/'
-
-# Model path
-WEIGHTS = "yolov3.weights"
-CFG = "yolov3.cfg"
-COCONAMES = "coco.names"
 
 # Colors congiguration
 GREEN = (0,255,0)

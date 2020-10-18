@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import math
 import os
-from setup.LoadModel import LoadModel
+from setup.model import dataFromModel
 from setup.config import *
 
 # Load image
@@ -28,7 +28,7 @@ class ObjectDetection:
     def main(self):
 
         while True:
-            net, output_layers, classes = LoadModel.get()
+            net, layerNames, classes = dataFromModel.get(MODELPATH, WEIGHTS, CFG, COCONAMES)
 
             frame_resized = cv2.resize(self.image, (416,416)) # resize frame for prediction       
 
@@ -39,21 +39,19 @@ class ObjectDetection:
             blob = cv2.dnn.blobFromImage(frame_resized, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
 
             net.setInput(blob)
-            outs = net.forward(output_layers)
+            layerOutputs = net.forward(layerNames)
 
-            confidence_arr=[]
-            class_ids = []
+            classIDs = []
             confidences = []
             boxes = []
-            for out in outs:
-                for detection in out:
+            for output in layerOutputs:
+                for detection in output:
                     scores = detection[5:]
-                    class_id = np.argmax(scores)
-                    confidence = scores[class_id]
+                    classID = np.argmax(scores)
+                    confidence = scores[classID]
 
                     #if prediction is 50%
-                    if confidence > 0.5:
-                        confidence_arr.append(confidence)
+                    if confidence > CONFIDENCE:
                         # Object detected
                         center_x = int(detection[0] * width)
                         center_y = int(detection[1] * height)
@@ -66,10 +64,10 @@ class ObjectDetection:
 
                         boxes.append([x, y, w, h])
                         confidences.append(float(confidence))
-                        class_ids.append(class_id)
+                        classIDs.append(classID)
 
             # apply non-max suppression
-            indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+            indexes = cv2.dnn.NMSBoxes(boxes, confidences, CONFIDENCE, THRESHOLD)
 
             for i in range(len(boxes)):
                 if i in indexes:
@@ -81,7 +79,7 @@ class ObjectDetection:
                     ymax = (y + h)
 
                     self.draw_detection_box(self.image,xmin,ymin,xmax,ymax,BLUE)
-                    label = f"{classes[class_ids[i]]} {'%.2f' % confidence_arr[i]}"
+                    label = f"{classes[classIDs[i]]} {'%.2f' % confidences[i]}"
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
 
                     y1label = max(ymin, labelSize[1])
