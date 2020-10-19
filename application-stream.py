@@ -115,7 +115,7 @@ class ObjectDetection:
 
             cv2.imshow("YOLO Object Detection", self.frame)
 
-            if cv2.waitKey(1) >= 0:  
+            if cv2.waitKey(1) & 0xff == ord('q'):
                 break
 
         self.video.release()
