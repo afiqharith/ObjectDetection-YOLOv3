@@ -14,7 +14,7 @@ CFG = "yolov3.cfg"
 COCONAMES = "coco.names"
 
 # Video path
-VIDEONAME = "TownCentre.mp4"
+VIDEONAME = 'LiverpoolCityCentre.mp4'
 VIDEOFOLDER = "videos/"
 
 # Image path
