@@ -3,7 +3,7 @@
 _Install the dependencies on command line:_
 
 ```sh
-$ pip3 install -r requirement.txt
+$ pip3 install -r requirements.txt
 ```
 
 _To run the program on command line:_
@@ -26,7 +26,6 @@ To use centroid tracker, enable tracker in **config.py** file by changing `TRACK
 
 | ![thumbnail](/images/output.jpeg) |
 | --------------------------------- |
-
 
 ---
 
