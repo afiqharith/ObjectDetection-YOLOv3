@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import math
 import os
-from setup.model import dataFromModel
+from setup.model import Model
 from setup.config import *
 
 # Load image
@@ -15,12 +15,11 @@ IMAGEPATH = os.path.join(os.getcwd(), IMAGEFOLDER, IMAGENAME)
 
 class ObjectDetection:
     
-    def __init__(self, IMAGEPATH, START = True):
+    def __init__(self, source = IMAGEPATH, START = True):
 
-        self.image = cv2.imread(IMAGEPATH)
-        
-        if START == True:
-            self.main()
+        self.image = cv2.imread(source)
+        self.model = Model(UTILS, MODELPATH, WEIGHTS, CFG, COCONAMES)
+        if START == True: self.main()
     
     def draw_detection_box(self, frame, xmn, ymn, xmx, ymx, color):
         cv2.rectangle(frame, (xmn, ymn), (xmx, ymx), color, 2)
@@ -28,7 +27,7 @@ class ObjectDetection:
     def main(self):
 
         while True:
-            net, layerNames, classes = dataFromModel.get(MODELPATH, WEIGHTS, CFG, COCONAMES)
+            net, layerNames, classes = net, layerNames, classes = self.model.predict()
 
             frame_resized = cv2.resize(self.image, (416,416)) # resize frame for prediction       
 
@@ -87,11 +86,15 @@ class ObjectDetection:
                     cv2.putText(self.image, label, (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
 
             cv2.imshow("YOLO Object Detection", self.image)
+            '''
+            :Pressed 'Q': Exit application
+            '''
             if cv2.waitKey(0) % 256 == ord('q'):
                 break
         
 
 if __name__ == '__main__':
 
+    print('Press \'Q\' to exit.')
     ObjectDetection(IMAGEPATH)
     cv2.destroyAllWindows()

@@ -7,30 +7,29 @@ import cv2
 import numpy as np
 import math
 import os
-from setup.model import dataFromModel
+from setup.model import Model
 from setup.config import *
 from setup.tracker import CentroidTracker
 
-# Load video
-VIDEOPATH = os.path.join(os.getcwd(), VIDEOFOLDER, VIDEONAME)
+# Load video frpm PATH if CAMERA is OFF
+if CAMERA_FLAG == False:
+    VIDEOPATH = os.path.join(os.getcwd(), VIDEOFOLDER, VIDEONAME)
+else:
+    VIDEOPATH = 0
 
 class ObjectDetection:
 
-    def __init__(self, VIDEOPATH, CAMERA, START = True):
+    def __init__(self, source = VIDEOPATH, START = True):
 
-        if CAMERA == True:
-            self.video = cv2.VideoCapture(0)
-        else:
-            self.video = cv2.VideoCapture(VIDEOPATH)
-
-        if START == True:
-            self.main()
+        self.video = cv2.VideoCapture(source)
+        self.model = Model(UTILS, MODELPATH, WEIGHTS, CFG, COCONAMES)
+        if START == True: self.main()
     
     def draw_detection_box(self, frame, xmn, ymn, xmx, ymx, color):
         cv2.rectangle(frame, (xmn, ymn), (xmx, ymx), color, 2)
         
     def main(self):
-        net, layerNames, classes = dataFromModel.get(MODELPATH, WEIGHTS, CFG, COCONAMES)
+        net, layerNames, classes = self.model.predict()
 
         while (self.video.isOpened()):
             self.ret, self.frame = self.video.read() 
@@ -122,5 +121,5 @@ class ObjectDetection:
 
 if __name__ == '__main__':
 
-    ObjectDetection(VIDEOPATH, CAMERA)
+    ObjectDetection()
     cv2.destroyAllWindows()

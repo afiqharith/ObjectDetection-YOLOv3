@@ -2,21 +2,27 @@ import cv2
 import numpy as np
 import os 
 
-class dataFromModel:
+class Model:
 
-    def get(MODELPATH, WEIGHTS, CFG, COCONAMES):
+    def __init__(self, UTILS, MODELPATH, WEIGHTS, CFG, COCONAMES):
+        '''
+        :param UTILS: utils folder
+        :param MODELPATH: model folder located in utils folder
+        :param WEIGHTS: YOLOv3 weights file located in model folder
+        :param CFG: YOLOv3 config file located in model folder
+        :param COCONAMES: file of the list of the COCO object names in the dataset
+        '''
+        self.WEIGHTSPATH = os.path.join(os.getcwd(), UTILS, MODELPATH, WEIGHTS)
+        self.CFGPATH = os.path.join(os.getcwd(), UTILS, MODELPATH, CFG)
+        self.COCO_NAMEPATH = os.path.join(os.getcwd(), UTILS, COCONAMES)
 
-        classes = []
+    def predict(self):
 
-        WEIGHTSPATH = os.path.join(os.getcwd(), MODELPATH, WEIGHTS)
-        CFGPATH = os.path.join(os.getcwd(), MODELPATH, CFG)
-        COCO_NAMEPATH = os.path.join(os.getcwd(), "utils/", COCONAMES)
-        
-        net = cv2.dnn.readNet(WEIGHTSPATH, CFGPATH)
-
-        with open(COCO_NAMEPATH, "r") as f:
+        classes = list()
+        with open(self.COCO_NAMEPATH, "r") as f:
             classes = [line.strip() for line in f.readlines()]
-
+        
+        net = cv2.dnn.readNet(self.WEIGHTSPATH, self.CFGPATH)
         layerNames = net.getLayerNames()
         layerNames = [layerNames[i[0] - 1] for i in net.getUnconnectedOutLayers()]
         
