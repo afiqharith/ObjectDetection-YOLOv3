@@ -1,5 +1,5 @@
 CAMERA_FLAG = False
-TRACKER = False
+TRACKER_FLAG = False
 
 # Threshold when apply NMS 
 THRESHOLD = 0.4
@@ -16,11 +16,11 @@ COCONAMES = "coco.names"
 
 # Video path
 VIDEONAME = 'LiverpoolCityCentre.mp4'
-VIDEOFOLDER = "videos/"
+VIDEOFOLDER = "videos"
 
 # Image path
 IMAGENAME = 'scene.jpeg'
-IMAGEFOLDER = 'images/'
+IMAGEFOLDER = 'images'
 
 # Colors congiguration
 GREEN = (0,255,0)

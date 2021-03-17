@@ -105,7 +105,7 @@ class ObjectDetection:
                     cv2.putText(self.frame, label, (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
                     
                     # For object tracker from pyimagesarch
-                    if TRACKER == True:
+                    if TRACKER_FLAG == True:
                         for (objectID, centroid) in objects.items():
                             text = f'{objectID}'
                             cv2.putText(self.frame, text, (centroid[0] - 10, centroid[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREY, 1,cv2.LINE_AA)
